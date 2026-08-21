@@ -28,9 +28,27 @@ function _init()
 	score = 30000
 	bombs = 2
 	
+	starsx={}
+	starsy={}
+	
+	for i=1,50 do
+		add(starsx,flr(rnd(128)))
+		add(starsy,flr(rnd(128)))
+	end
+	
+	
 	
 end
 
+
+function starfield() 
+
+for i=1,#starsx do
+
+	pset(starsx[i],starsy[i],7)
+end
+end
+-->8
 
 
 function _update()
@@ -44,16 +62,33 @@ function _update()
 	if (btn(0)) then
 	 shipvx = -shipspd
 	 shipspr = 1
+		for i=1,#starsx do
+			starsx[i]=(starsx[i]-flr(rnd(2)))%128
+		end
 	end
 	
 	if (btn(1)) then
 	 shipvx = shipspd
 	 shipspr = 3
+	 for i=1,#starsx do
+			 starsx[i]=(starsx[i]+flr(rnd(2)))%128
+		end
 	end
 
-	if (btn(2)) shipvy = -shipspd
-	if (btn(3)) shipvy = shipspd
-	
+	if (btn(2)) then
+	 shipvy = -shipspd
+		for i=1,#starsx do
+			starsy[i]=(starsy[i]+flr(rnd(2)))%128
+		end
+		
+	end
+	if (btn(3)) then
+	 shipvy = shipspd
+
+		for i=1,#starsx do		
+			starsy[i]=(starsy[i]-flr(rnd(2)))%128
+		end
+	end
 	
 	-- trhuster animation with sprite 4->6
 	thrustspr = thrustspr+1
@@ -109,13 +144,15 @@ function _update()
 	-- bullet muzzle flash
 	if (muzzle > 0) muzzle= muzzle-2
 
+
 end
 
+-->8
 function _draw()
 	
 	cls(0)
+	starfield()
 	spr(shipspr,ship_x,ship_y)
- 
 	spr(thrustspr,ship_x,ship_y+9)
 	spr(bulletspr,bullet_x,bullet_y)
 	
@@ -123,7 +160,7 @@ function _draw()
 		circfill(ship_x+3,ship_y-3,muzzle,7)
 	end
 	
-	print("score:"..score,45,1) 
+	print("score:"..score,45,1,12) 
 	
 	for i=1,3 do
 		if i <= bombs then
@@ -141,18 +178,7 @@ function _draw()
 			spr(14,1+i*9,1)
 		end
 	end
-	
-	
-	--shootup(2,64,64,6)
-	 
 end
---[[
-function shootup(sprite,x,y,dy)
-	for i=0,dy do
-		spr(sprite,x,y+i)
-	end
-end
-]]
 __gfx__
 00000000000000000000000000000000077777000077700007777700000000000000000000000000000000000000600000000000008888000088880000000000
 000000000005000000050000000050005d777d5000777000d67776d0000000000000000000000000000000000055650000555500087788800800008000000000
